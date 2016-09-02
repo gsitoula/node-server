@@ -32,15 +32,17 @@ app.use(cookieParser());
 var hora = 3600000;
 var dia  = hora*24;
 
+console.log(genuuid(1))
+
 app.use(session({
-	cookie: {
-		maxAge: dia
-	},
+	genid: function(req){
+	return genuuid(18) },
 	secret: '123456',
-	resave: false,
-	saveUninitialized: true,
+	cookies: {maxAge: dia},
 	store: MemoryStore({expires: 60*60, checkperiod: 10*60})
 }));
+
+var sess;
 
 var configAD =
 {
@@ -53,8 +55,7 @@ var ad = new actDir(configAD);
 
 
 app.all('*',function(req, res, next){
-	req.ip;
-    res.header('Access-Control-Allow-Origin', 'http://192.168.1.109:3001');
+    res.header('Access-Control-Allow-Origin', 'http://192.168.1.109:9009');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header("Access-Control-Allow-Credentials", "true");
@@ -62,12 +63,18 @@ app.all('*',function(req, res, next){
 });
 
 app.post('/login', function(req, res) {
-
-	var username = req.body.username + "@" +config.domain;
+	
+	sess = req.session;
+	var username = req.body.username + "@" + config.domain;
 	var userbase = req.body.username;
 	var pass     = req.body.password;
 	var hash     = crypto.createHash('md5').update(username+Date.now()).digest('hex');
-
+	req.session.user = {token: hash, name: userbase};
+	sess.user = {token: hash, name: userbase};
+	console.log(sess.sessionID);
+	res.status(200).send(sess.user);
+	
+	/*	
 	ad.authenticate(username, pass, function(err, auth){
 		if(err)
 	  {
@@ -78,7 +85,7 @@ app.post('/login', function(req, res) {
 	  {	
 		  if(!auth)
 	    {
-		  /*Autenticacion fallida*/
+		  
 		  res.status(501).send({err: 1, descripcion: "ha ocurrido un error durante la autenticacion de sus credenciales"})
 		}	
 		  else
@@ -105,14 +112,19 @@ app.post('/login', function(req, res) {
 		       });	
 		      }
 	         }
-	      });	
+	      });*/	
 });
 
 app.get('/userSession', function(req, res) {
-	//res.status(200).send(req.session.user);
+	console.log(sess.sessionID);
+	console.log(sess);
+	res.status(200).send(sess.user);
+	
+	//console.log(req.session.user);
+	/*
 	if(req.session.user.name === req.param('name')){
 			res.status(200).send(req.session.user);
-	}
+	}*/
 	/*
 	  var findPerfil = function(perfil){
 				var db = mongoose.connection;
@@ -185,6 +197,7 @@ app.get('/userSession', function(req, res) {
 		
 		}    	
 	}*/  	
+	
 });
 /*
 router.get('/getSessionByToken', function(req, res) {
@@ -196,7 +209,7 @@ router.get('/getSessionByToken', function(req, res) {
 //app.use('/', login);
 //app.use('/', get);
 
-var port = process.env.PORT || config.port || "192.168.1.109:3001";//config.host;
+var port = process.env.PORT || config.port || 3000;
 
 app.listen(port, function() {
   console.log('Ejecutando en el puerto ' + port);
