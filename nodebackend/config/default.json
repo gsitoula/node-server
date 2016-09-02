@@ -1,0 +1,21 @@
+{
+	"port":"3001",
+	"host": "192.168.1.244:3001",
+	"dcd": "jsol",
+	"dce": "local",
+	"domain": "jsol.local",
+	"username":"Administrador",
+	"password":"Jsol3001",
+	/*"dbConfig":{
+		"user":"Administrador",
+		"password":"Jsol3001",
+		"server":"192.168.1.246",
+		"port":"1433",
+		"database":"auxiliout",
+		"domain":"JSOL.LOCAL",
+		"options":{
+			"tdsVersion":"7_1"
+		    }},*/
+	"adUrl":"192.168.1.250",
+	"ldapUrl":"192.168.1.250"
+}

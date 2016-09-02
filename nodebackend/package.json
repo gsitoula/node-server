@@ -1,0 +1,26 @@
+{
+  "name": "cardinal-app",
+  "version": "1.0.0",
+  "description": "nodebackend",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "gsitoula",
+  "license": "ISC",
+  "dependencies": {
+    "activedirectory": "^0.7.2",
+    "body-parser": "^1.15.2",
+    "config": "^1.21.0",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.0",
+    "crypto": "0.0.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "helmet": "^2.1.2",
+    "morgan": "^1.7.0",
+    "session-memory-store": "^0.2.2",
+    "uid-safe": "^2.1.2"
+  }
+}
